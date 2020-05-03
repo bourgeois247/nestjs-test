@@ -1,12 +1,14 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    Post,
-    Put,
-  } from '@nestjs/common';
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { Item } from '../item';
 import { Items } from '../items';
@@ -26,16 +28,19 @@ export class ItemsController {
     return this.itemService.find(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   create(@Body('item') item: Item) {
     this.itemService.create(item);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Put()
   update(@Body('item') item: Item) {
     this.itemService.update(item);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   delete(@Param('id') id: number) {
     this.itemService.delete(id);
